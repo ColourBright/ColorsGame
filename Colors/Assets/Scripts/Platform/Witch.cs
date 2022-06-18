@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Witch : MonoBehaviour
 {
@@ -15,10 +14,13 @@ public class Witch : MonoBehaviour
     private bool onPlatform;
     private Collision2D platform;
 
+    private Dictionary<Color, int> flowersInventory;
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        flowersInventory = new Dictionary<Color, int>();
     }
     
     void Update()
@@ -35,16 +37,16 @@ public class Witch : MonoBehaviour
             body.transform.localScale = new Vector3(-scale, scale, scale);
         }
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
         
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             ColorPlatform();
         }
-        
+
         _animator.SetBool("run", horizontalInput != 0);
         _animator.SetBool("grounded", grounded);
     }
@@ -52,7 +54,7 @@ public class Witch : MonoBehaviour
     private void ColorPlatform()
     {
         if (!onPlatform) return;
-        platform.gameObject.GetComponent<Tilemap>().color = colorPalette.GetSelectedColor();
+        colorPalette.UsePotion(platform.gameObject);
     }
 
     private void Jump()
@@ -63,9 +65,17 @@ public class Witch : MonoBehaviour
         grounded = false;
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!collision.gameObject.CompareTag("Platform")) return;
+        if (other.CompareTag("Cauldron"))
+        {
+            var cauldron = other.GetComponent<Cauldron>();
+            if (flowersInventory[cauldron.color] >= cauldron.flowersCount)
+            {
+                flowersInventory[cauldron.color] -= cauldron.flowersCount;
+                colorPalette.AddPotion(cauldron.color, cauldron.potionsCount);
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -75,6 +85,29 @@ public class Witch : MonoBehaviour
             grounded = true;
             onPlatform = true;
             platform = col;
+        }
+
+        if (col.gameObject.CompareTag("Flower"))
+        {
+            var flowerColor = col.gameObject.GetComponent<SpriteRenderer>().color;
+            if (flowersInventory.TryGetValue(flowerColor, out var a))
+            {
+                flowersInventory[flowerColor]++;
+            }
+            else
+            {
+                flowersInventory.Add(flowerColor, 1);
+            }
+            Debug.Log(flowersInventory[flowerColor]);
+            Destroy(col.gameObject);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Platform") && onPlatform)
+        {
+            platform = other;
         }
     }
 
