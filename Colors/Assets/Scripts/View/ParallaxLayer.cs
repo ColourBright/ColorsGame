@@ -15,10 +15,10 @@ namespace Platformer.View
 
         Transform _camera;
 
-        void Awake()
-        {
-            _camera = Camera.main.transform;
-        }
+        // void Awake()
+        // {
+        //     _camera = Camera.main.transform;
+        // }
 
         void LateUpdate()
         {
