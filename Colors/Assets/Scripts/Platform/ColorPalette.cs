@@ -8,6 +8,7 @@ public class ColorPalette : MonoBehaviour
 {
     private List<Color> colors;
     [SerializeField] private Image potion;
+    [SerializeField] private Text countText;
 
     private Dictionary<Color, int> potionInventory;
     private int selectedColor;
@@ -33,9 +34,17 @@ public class ColorPalette : MonoBehaviour
             selectedColor %= colors.Count;
         }
         potion.color = GetSelectedColor();
+        if (potion.color != Color.white)
+        {
+            countText.text = potionInventory[potion.color].ToString();
+        }
+        else
+        {
+            countText.text = "";
+        }
     }
 
-    public Color GetSelectedColor()
+    private Color GetSelectedColor()
     {
         return colors[Math.Abs(selectedColor)];
     }
