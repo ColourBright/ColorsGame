@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class Witch : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    private float runSpeed = 7f;
+    private float jumpSpeed = 7f;
     [SerializeField] private float scale;
     [SerializeField] private ColorPalette colorPalette;
 
@@ -14,19 +15,16 @@ public class Witch : MonoBehaviour
     private bool onPlatform;
     private Collision2D platform;
 
-    private Dictionary<Color, int> flowersInventory;
-
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        flowersInventory = new Dictionary<Color, int>();
     }
     
     void Update()
     {
         var horizontalInput = Input.GetAxis("Horizontal");
-        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        body.velocity = new Vector2(horizontalInput * runSpeed, body.velocity.y);
         
         if (horizontalInput > 0.01f)
         {
@@ -60,7 +58,7 @@ public class Witch : MonoBehaviour
     private void Jump()
     {
         if (!grounded) return;
-        body.velocity = new Vector2(body.velocity.x, speed);
+        body.velocity = new Vector2(body.velocity.x, jumpSpeed);
         _animator.SetTrigger("jump");
         grounded = false;
     }
@@ -70,9 +68,9 @@ public class Witch : MonoBehaviour
         if (other.CompareTag("Cauldron"))
         {
             var cauldron = other.GetComponent<Cauldron>();
-            if (flowersInventory[cauldron.color] >= cauldron.flowersCount)
+            if (colorPalette.flowersInventory[cauldron.color] >= cauldron.flowersCount)
             {
-                flowersInventory[cauldron.color] -= cauldron.flowersCount;
+                colorPalette.flowersInventory[cauldron.color] -= cauldron.flowersCount;
                 colorPalette.AddPotion(cauldron.color, cauldron.potionsCount);
             }
         }
@@ -89,18 +87,25 @@ public class Witch : MonoBehaviour
 
         if (col.gameObject.CompareTag("Flower"))
         {
-            var flowerColor = col.gameObject.GetComponent<SpriteRenderer>().color;
-            if (flowersInventory.TryGetValue(flowerColor, out var a))
-            {
-                flowersInventory[flowerColor]++;
-            }
-            else
-            {
-                flowersInventory.Add(flowerColor, 1);
-            }
-            Debug.Log(flowersInventory[flowerColor]);
-            Destroy(col.gameObject);
+            PickupFlower(col);
         }
+    }
+
+    private void PickupFlower(Collision2D col)
+    {
+        var flowerColor = col.gameObject.GetComponent<SpriteRenderer>().color;
+        if (colorPalette.flowersInventory.TryGetValue(flowerColor, out _))
+        {
+            colorPalette.flowersInventory[flowerColor]++;
+        }
+        else
+        {
+            colorPalette.flowersInventory.Add(flowerColor, 1);
+        }
+        
+        colorPalette.AddPotion(flowerColor, 0);
+        Debug.Log(colorPalette.flowersInventory[flowerColor]);
+        Destroy(col.gameObject);
     }
 
     private void OnCollisionStay2D(Collision2D other)
