@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Witch : MonoBehaviour
 {
-    [SerializeField] public float speed;
-    [SerializeField] public float jumpforce;
+    public float speed;
+    public float jumpforce;
+    
     [SerializeField] private float scale;
     [SerializeField] private ColorPalette colorPalette;
 
-    private float defaultSpeed;
-    private float defaultJumpforce;
+    [SerializeField] private float defaultSpeed;
+    [SerializeField] private float defaultJumpforce;
 
     private Rigidbody2D body;
     private Animator _animator;
@@ -18,12 +19,13 @@ public class Witch : MonoBehaviour
 
     private bool grounded;
     private bool onColorful;
+    public bool leftColorfulPlatform;
     private GameObject platformToColor;
 
     void Start()
     {
-        defaultSpeed = speed;
-        defaultJumpforce = jumpforce;
+        speed = defaultSpeed;
+        jumpforce = defaultJumpforce;
         body = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
     }
@@ -32,7 +34,7 @@ public class Witch : MonoBehaviour
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
-        
+
         if (horizontalInput > 0.01f)
         {
             body.transform.localScale = new Vector3(scale, scale, scale);
@@ -60,6 +62,10 @@ public class Witch : MonoBehaviour
     private void ColorPlatform()
     {
         if (!onColorful) return;
+        if (colorPalette.GetSelectedColor().Equals(ColorPalette.colors[0]))
+        {
+            ResetStats();
+        }
         colorPalette.UsePotion(platformToColor.gameObject);
     }
 
@@ -90,19 +96,6 @@ public class Witch : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.CompareTag("Platform"))
-        {
-            grounded = true;
-        }
-
-        if (col.gameObject.CompareTag("Flower"))
-        {
-            PickupFlower(col);
-        }
-    }
-
     private void PickupFlower(Collision2D col)
     {
         var flowerColor = col.gameObject.GetComponent<SpriteRenderer>().color;
@@ -128,6 +121,38 @@ public class Witch : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Colorful"))
+        {
+            onColorful = false;
+            platformToColor = null;
+        }
+    }
+    
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Platform"))
+        {
+            grounded = true;
+            if (leftColorfulPlatform)
+            {
+                ResetStats();
+            }
+        }
+
+        if (col.gameObject.CompareTag("Flower"))
+        {
+            PickupFlower(col);
+        }
+    }
+
+    private void ResetStats()
+    {
+        speed = defaultSpeed;
+        jumpforce = defaultJumpforce;
+    }
+
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Platform"))
@@ -141,15 +166,6 @@ public class Witch : MonoBehaviour
         if (other.gameObject.CompareTag("Platform"))
         {
             grounded = false;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Colorful"))
-        {
-            onColorful = false;
-            platformToColor = null;
         }
     }
 }

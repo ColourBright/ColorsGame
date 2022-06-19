@@ -5,7 +5,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637911627357220042
+      ticks: 637912572037972638
     m_Hash: 3147772249
   m_LockFileStatus:
     m_FilePath: F:/JetBrains/Projects/ColorsGame/Colors/Packages/packages-lock.json
@@ -13,7 +13,7 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637911627357320292
+      ticks: 637912572037982683
     m_Hash: 2591753706
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}

@@ -4486,10 +4486,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d3b92df693522e48974d8f4ff67aaba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
-  jumpforce: 12
+  speed: 0
+  jumpforce: 0
   scale: 0.25
   colorPalette: {fileID: 1767769642}
+  defaultSpeed: 7
+  defaultJumpforce: 12
+  leftColorfulPlatform: 0
 --- !u!61 &1053943311
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5372,7 +5375,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
-  palette: {fileID: 1767769642}
 --- !u!66 &1117727413
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -8226,7 +8228,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5a1e41c1a4104cc4ca76dd04b5bbdb40, type: 3}
   - {fileID: 21300000, guid: 2e84c32915afa1e4aa39c2011a817f08, type: 3}
   - {fileID: 21300000, guid: 289681d96d880e349925150a60c77a8a, type: 3}
-  color: {r: 0.078431375, g: 0.5254902, b: 1, a: 1}
+  color: {r: 0.07, g: 0.49, b: 1, a: 1}
 --- !u!4 &1399852321
 Transform:
   m_ObjectHideFlags: 0
@@ -10421,7 +10423,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b9a8c6b5e24783b9bc6ff085d16397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colors: []
   potion: {fileID: 1342240575}
   potionText: {fileID: 412011280}
   flower: {fileID: 1192067524}
@@ -10576,7 +10577,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 0}
-  palette: {fileID: 1767769642}
 --- !u!66 &1853391603
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -11182,7 +11182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091f1a119e4e0284eb2dcb790e56f570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.078431375, g: 0.5254902, b: 1, a: 1}
+  color: {r: 0.07, g: 0.49, b: 1, a: 1}
   flowersCount: 2
   potionsCount: 1
   book: {fileID: 483196623}

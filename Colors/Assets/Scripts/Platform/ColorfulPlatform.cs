@@ -1,27 +1,52 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
 class ColorfulPlatform : MonoBehaviour
 {
         [SerializeField]
         private Color color;
-        [SerializeField]
-        private ColorPalette palette;
-        [SerializeField]
-        static float increasedSpeed = 10f;
-        [SerializeField]
-        static float increasedJumpforce = 15f;
+        
+        private static float increasedSpeed = 10F;
+        private static float increasedJumpforce = 15F;
 
-        private List<Color> colors;
+        private Witch witch;
 
-        private void Start()
+        private void Update()
         {
-            colors = palette.colors;
             color = GetComponent<Tilemap>().color;
         }
 
-        void AAAAA(Collision2D other)
+        void OnTriggerEnter2D(Collider2D other)
         {
+            if (other.CompareTag("Player"))
+            {
+                witch = other.GetComponent<Witch>();
+                witch.leftColorfulPlatform = false;
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                witch = other.GetComponent<Witch>();
+                if (color.Equals(ColorPalette.colors[1]))
+                {
+                    witch.speed = increasedSpeed;
+                }
+                else if (color.Equals(ColorPalette.colors[2]))
+                {
+                    witch.jumpforce = increasedJumpforce;
+                }
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                witch = other.GetComponent<Witch>();
+                witch.leftColorfulPlatform = true;
+            }
         }
 }

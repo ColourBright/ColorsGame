@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 public class ColorPalette : MonoBehaviour
 {
-    public List<Color> colors;
+    public static readonly List<Color> colors = new List<Color>
+    {
+        Color.white,
+        new Color(0.07f, 0.49f, 1, 1), // blue
+        Color.yellow
+    };
+    
     [SerializeField] private Image potion;
     [SerializeField] private Text potionText;
 
@@ -21,7 +28,11 @@ public class ColorPalette : MonoBehaviour
     {
         potionInventory = new Dictionary<Color, int>();
         flowersInventory = new Dictionary<Color, int>();
-        colors = new List<Color> { Color.white };
+        foreach (var color in colors.Where(color => color != Color.white))
+        {
+            potionInventory.Add(color, 0);
+            flowersInventory.Add(color, 0);
+        }
     }
 
     private void Update()
@@ -53,7 +64,7 @@ public class ColorPalette : MonoBehaviour
         }
     }
 
-    private Color GetSelectedColor()
+    public Color GetSelectedColor()
     {
         return colors[Math.Abs(selectedColor)];
     }
@@ -67,7 +78,6 @@ public class ColorPalette : MonoBehaviour
         else
         {
             potionInventory.Add(color, count);
-            colors.Add(color);
         }
         selectedColor = colors.IndexOf(color);
     }
