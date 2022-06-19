@@ -11,8 +11,7 @@ public class ColorPalette : MonoBehaviour
     {
         Color.white,
         new Color(0.07f, 0.49f, 1, 1), // blue
-        // new Color(1f, 1f, 0f, 1f)
-        new Color(1f, 0.79f, 0.09f, 1f)
+        new Color(1f, 0.79f, 0.09f, 1f) // yellow
     };
     
     [SerializeField] private Image potion;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Witch : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class Witch : MonoBehaviour
     [SerializeField] private float scale;
     [SerializeField] private ColorPalette colorPalette;
 
-    [SerializeField] private float defaultSpeed;
-    [SerializeField] private float defaultJumpforce;
+    [SerializeField] public float defaultSpeed;
+    [SerializeField] public float defaultJumpforce;
     [SerializeField] private float groundRadius;
     [SerializeField] private LayerMask ground;
     
@@ -61,6 +62,11 @@ public class Witch : MonoBehaviour
             ColorPlatform();
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
         _animator.SetBool("run", horizontalInput != 0);
         _animator.SetBool("grounded", grounded);
         _animator.SetFloat("vSpeed", body.velocity.y);
@@ -81,7 +87,6 @@ public class Witch : MonoBehaviour
         if (!grounded) return;
         body.velocity = new Vector2(body.velocity.x, jumpforce);
         _animator.SetTrigger("Jump");
-        // grounded = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -98,6 +103,10 @@ public class Witch : MonoBehaviour
 
         if (other.gameObject.CompareTag("Colorful"))
         {
+            if (leftColorfulPlatform)
+            {
+                ResetStats();
+            }
             onColorful = true;
             platformToColor = other.gameObject;
         }
@@ -154,25 +163,9 @@ public class Witch : MonoBehaviour
         }
     }
 
-    private void ResetStats()
+    public void ResetStats()
     {
         speed = defaultSpeed;
         jumpforce = defaultJumpforce;
-    }
-
-    private void OnCollisionStay2D(Collision2D other)
-    {
-        // if (other.gameObject.CompareTag("Platform"))
-        // {
-        //     grounded = true;
-        // }
-    }
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        // if (other.gameObject.CompareTag("Platform"))
-        // {
-        //     grounded = false;
-        // }
     }
 }

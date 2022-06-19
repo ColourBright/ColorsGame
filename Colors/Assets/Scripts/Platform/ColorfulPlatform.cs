@@ -30,6 +30,7 @@ class ColorfulPlatform : MonoBehaviour
             if (other.CompareTag("Player"))
             {
                 witch = other.GetComponent<Witch>();
+                witch.ResetStats();
                 if (color.Equals(ColorPalette.colors[1]))
                 {
                     witch.speed = increasedSpeed;

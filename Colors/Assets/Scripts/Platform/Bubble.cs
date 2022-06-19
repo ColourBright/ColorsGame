@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class Bubble : MonoBehaviour
@@ -15,14 +15,22 @@ public class Bubble : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            foreach (var obj in objectsToColor1)
-            {
-                obj.color = color1;
-            }
-            foreach (var obj in objectsToColor2)
-            {
-                obj.color = color2;
-            }
+            StartCoroutine(EndGame());
         }
+    }
+
+    IEnumerator EndGame()
+    {
+        foreach (var obj in objectsToColor1)
+        {
+            obj.color = color1;
+        }
+        foreach (var obj in objectsToColor2)
+        {
+            obj.color = color2;
+        }
+
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("WinMenu");
     }
 }
