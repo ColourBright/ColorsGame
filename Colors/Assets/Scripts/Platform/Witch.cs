@@ -31,7 +31,7 @@ public class Witch : MonoBehaviour
     void Update()
     {
         var horizontalInput = Input.GetAxis("Horizontal");
-        body.velocity = new Vector2(horizontalInput * runSpeed, body.velocity.y);
+        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
         
         if (horizontalInput > 0.01f)
         {
@@ -139,8 +139,7 @@ public class Witch : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform")
-            && !Physics2D.OverlapBoxAll(collider.bounds.center, collider.bounds.size, 0).Any(c => c.CompareTag("Platform")))
+        if (other.gameObject.CompareTag("Platform"))
         {
             grounded = false;
         }
