@@ -6,16 +6,21 @@ using UnityEngine.UI;
 
 public class ColorPalette : MonoBehaviour
 {
-    private List<Color> colors;
+    public List<Color> colors;
     [SerializeField] private Image potion;
-    [SerializeField] private Text countText;
+    [SerializeField] private Text potionText;
+
+    [SerializeField] private Image flower;
+    [SerializeField] private Text flowerText;
 
     private Dictionary<Color, int> potionInventory;
+    public Dictionary<Color, int> flowersInventory;
     private int selectedColor;
 
     private void Start()
     {
         potionInventory = new Dictionary<Color, int>();
+        flowersInventory = new Dictionary<Color, int>();
         colors = new List<Color> { Color.white };
     }
 
@@ -36,11 +41,15 @@ public class ColorPalette : MonoBehaviour
         potion.color = GetSelectedColor();
         if (potion.color != Color.white)
         {
-            countText.text = potionInventory[potion.color].ToString();
+            potionText.text = potionInventory[potion.color].ToString();
+            flowerText.text = flowersInventory[potion.color].ToString();
+            flower.color = GetSelectedColor();
         }
         else
         {
-            countText.text = "";
+            potionText.text = "";
+            flowerText.text = "";
+            flower.color = Color.clear;
         }
     }
 
@@ -59,13 +68,12 @@ public class ColorPalette : MonoBehaviour
         {
             potionInventory.Add(color, count);
             colors.Add(color);
-            selectedColor = colors.Count - 1;
         }
+        selectedColor = colors.IndexOf(color);
     }
 
     public void UsePotion(GameObject platform)
     {
-        Debug.Log(selectedColor);
         var color = GetSelectedColor();
         var platformColor = platform.GetComponent<Tilemap>().color;
         
@@ -78,16 +86,13 @@ public class ColorPalette : MonoBehaviour
             return;
         }
         
+        if (potionInventory[color] < 1) return;
+        
         if (platformColor != Color.white) return;
         
         if (!potionInventory.TryGetValue(color, out _)) return;
         potionInventory[color] -= 1;
         platform.GetComponent<Tilemap>().color = color;
-        if (potionInventory[color] == 0)
-        {
-            colors.Remove(color);
-            potionInventory.Remove(color);
-            selectedColor--;
-        }
+        potionText.text = potionInventory[color].ToString();
     }
 }
