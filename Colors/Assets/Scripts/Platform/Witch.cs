@@ -12,12 +12,17 @@ public class Witch : MonoBehaviour
 
     [SerializeField] private float defaultSpeed;
     [SerializeField] private float defaultJumpforce;
+    [SerializeField] private float groundRadius;
+    [SerializeField] private LayerMask ground;
+    
+
+    [SerializeField] private Transform groundChecker; 
 
     private Rigidbody2D body;
     private Animator _animator;
     private BoxCollider2D collider;
 
-    private bool grounded;
+    [SerializeField] private bool grounded;
     private bool onColorful;
     public bool leftColorfulPlatform;
     private GameObject platformToColor;
@@ -34,6 +39,8 @@ public class Witch : MonoBehaviour
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        
+        grounded = Physics2D.OverlapCircle(groundChecker.position, groundRadius, ground);
 
         if (horizontalInput > 0.01f)
         {
@@ -74,7 +81,7 @@ public class Witch : MonoBehaviour
         if (!grounded) return;
         body.velocity = new Vector2(body.velocity.x, jumpforce);
         _animator.SetTrigger("Jump");
-        grounded = false;
+        // grounded = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -155,17 +162,17 @@ public class Witch : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform"))
-        {
-            grounded = true;
-        }
+        // if (other.gameObject.CompareTag("Platform"))
+        // {
+        //     grounded = true;
+        // }
     }
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Platform"))
-        {
-            grounded = false;
-        }
+        // if (other.gameObject.CompareTag("Platform"))
+        // {
+        //     grounded = false;
+        // }
     }
 }
