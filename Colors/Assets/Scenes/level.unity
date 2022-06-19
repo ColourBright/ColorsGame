@@ -4469,7 +4469,7 @@ GameObject:
   - component: {fileID: 1053943315}
   m_Layer: 0
   m_Name: Witch
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5368,9 +5368,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1117727410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b76c8ef2ea34f7648ab18de0d94e53af, type: 3}
+  m_Script: {fileID: 11500000, guid: 573d5dfc539286b4ab3cb0cf26b94fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 0, g: 0, b: 0, a: 0}
+  palette: {fileID: 1767769642}
 --- !u!66 &1117727413
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -7960,7 +7962,7 @@ RectTransform:
   m_Children:
   - {fileID: 1069854953}
   m_Father: {fileID: 1767769639}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8036,7 +8038,7 @@ RectTransform:
   m_Children:
   - {fileID: 412011279}
   m_Father: {fileID: 1767769639}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10359,8 +10361,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
-  - {fileID: 1342240574}
   - {fileID: 1192067523}
+  - {fileID: 1342240574}
   m_Father: {fileID: 1853058259}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10570,9 +10572,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1853391600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b76c8ef2ea34f7648ab18de0d94e53af, type: 3}
+  m_Script: {fileID: 11500000, guid: 573d5dfc539286b4ab3cb0cf26b94fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 0}
+  palette: {fileID: 1767769642}
 --- !u!66 &1853391603
 CompositeCollider2D:
   m_ObjectHideFlags: 0

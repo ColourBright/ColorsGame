@@ -95,7 +95,6 @@ public class Witch : MonoBehaviour
         if (col.gameObject.CompareTag("Platform"))
         {
             grounded = true;
-            speed = defaultSpeed;
         }
 
         if (col.gameObject.CompareTag("Flower"))
